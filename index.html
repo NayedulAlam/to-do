@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        h1 {
+            padding-left: 80px;
+        }
+
+        #my-items li {
+            display: flex;
+            justify-content: space-between;
+            padding-right: 80px;
+            padding-bottom: 20px;
+        }
+
+        #add {
+            margin-top: 16px;
+            display: flex;
+            justify-content: end;
+            padding-right: 80px;
+            padding-bottom: 40px;
+
+        }
+
+        h3 {
+            color: lightgray;
+        }
+
+        #my-items {
+            max-width: 900px;
+            margin: 0 auto;
+            user-select: none;
+            display: flex;
+            flex-direction: column;
+        }
+
+        button,
+        label,
+        input[type="checkbox"] {
+            cursor: pointer;
+        }
+
+        input[type="checkbox"] {
+            accent-color: lightgray;
+        }
+
+        .mark {
+            text-decoration: line-through;
+            color: lightgray;
+        }
+
+        .lastPos {
+            order: 9999;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>My List Items</h1>
+    <hr style="max-width: 1400px;">
+    <div id="add">
+        <div>
+            <input type="text" id="add-items" placeholder="Enter Items"> <button id="addBtn">Add</button>
+            <div id="duplicate-error" style="color: red; display: none;">*Duplicate Item</div>
+            <div id="empty-error" style="color: red; display: none;">*Empty Item</div>
+        </div>
+    </div>
+    <ul id="my-items">
+        <h3> Add List Items...</h3>
+
+    </ul>
+
+    <script>
+        let addBtn = document.querySelector("#addBtn");
+        var itemInp = document.querySelector("#add-items");
+        let delBtns = document.querySelectorAll("#my-items li button");
+        let duplicateError = document.querySelector("#duplicate-error");
+        let emptyError = document.querySelector("#empty-error");
+        let itemArr = [];
+
+        document.addEventListener("DOMContentLoaded", () => {
+            itemInp.focus();
+        })
+
+        function addElement() {
+            let duplicateFlag = 0;
+            itemArr.forEach(e => {
+                if (e == itemInp.value.trim()) {
+                    duplicateError.style.display = "block";
+                    duplicateFlag = 1;
+                }
+            })
+
+            if (duplicateFlag) return;
+
+            duplicateError.style.display = "none";
+
+            if (itemInp.value !== "") {
+                emptyError.style.display = "none"
+
+                itemArr.push(itemInp.value.trim());
+                document.querySelector("h3").style.display = "none";
+                let li = document.createElement("li");
+                li.innerHTML = `<div> <input type="checkbox" id="${itemInp.value.trim()}" > <label for="${itemInp.value.trim()}"> ${itemInp.value.trim()}</label> </div> <button class="delBtn">Delete</button>`;
+                document.querySelector("#my-items").appendChild(li);
+                itemInp.value = "";
+                itemInp.focus()
+
+            }
+            else {
+                emptyError.style.display = "block"
+            }
+        }
+
+
+        //in future remember do not mix more than one operations if it's not dependent in one function i said don't 
+        document.querySelector("#my-items").addEventListener('click', (e) => {
+            if (e.target.classList.contains("delBtn")) {
+                e.target.parentElement.remove();
+            }
+            if (e.target.getAttribute("type") === "checkbox") {
+                e.target.nextElementSibling.classList.toggle("mark");
+                e.target.closest("li").classList.toggle("lastPos");
+            }
+
+        })
+
+        addBtn.addEventListener("click", addElement);
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && document.activeElement === itemInp) addElement();
+        });
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "/" && document.activeElement !== itemInp) {
+                e.preventDefault();
+                itemInp.focus();
+            };
+        })
+
+
+
+    </script>
+</body>
+
+</html>
