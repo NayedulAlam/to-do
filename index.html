@@ -19,9 +19,7 @@
 
         #add {
             margin-top: 16px;
-            display: flex;
-            justify-content: end;
-            padding-right: 80px;
+            padding-left: 80px;
             padding-bottom: 40px;
 
         }
@@ -32,7 +30,8 @@
 
         #my-items {
             max-width: 900px;
-            margin: 0 auto;
+            /* margin: 0 auto; */
+            padding-left: 80px;
             user-select: none;
             display: flex;
             flex-direction: column;
@@ -57,24 +56,28 @@
             order: 9999;
         }
 
+        hr {
+            margin: 0 70px;
+        }
+
         @media (max-width:1000px) {
-            h1 {
+
+            h1,
+            #my-items,
+            #add {
                 padding-left: 10px;
             }
 
-            #add {
-                justify-content: center;
-                padding-right: 0;
+            hr {
+                margin: 0 8px;
             }
-
-
         }
     </style>
 </head>
 
 <body>
     <h1>My List Items</h1>
-    <hr style="max-width: 1400px;">
+    <hr>
     <div id="add">
         <div>
             <input type="text" id="add-items" placeholder="Enter Items"> <button id="addBtn">Add</button>
